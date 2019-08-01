@@ -1,0 +1,17 @@
+{
+  "name": "envnodereact",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd backend && nodemon server.js\" \"cd client && npm start\"",
+    "setup": "concurrently \"cd backend && npm install\" \"cd client && npm install\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.1",
+    "envfile": "^3.0.0"
+  }
+}
