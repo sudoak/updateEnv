@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"cd backend && nodemon server.js\" \"cd client && npm start\"",
-    "setup": "concurrently \"cd backend && npm install\" \"cd client && npm install\""
+    "setup": "npm install && cd ./client && npm install && cd ../backend && npm install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^4.1.1",
-    "envfile": "^3.0.0"
+    "envfile": "^3.0.0",
+    "nodemon": "^1.19.1"
   }
 }
