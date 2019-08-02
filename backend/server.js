@@ -35,7 +35,6 @@ app.get("/getenvironment/:process", (req, res, next) => {
 });
 
 app.get("/setEnvironment/:process/:key/:value", async (req, res, next) => {
-  // console.log(process.env);
   try {
     const { process, key, value } = req.params;
     if (process && key && value) {
@@ -46,32 +45,36 @@ app.get("/setEnvironment/:process/:key/:value", async (req, res, next) => {
       };
       fs.writeFileSync(`${process}/.env`, envfile.stringifySync(temp));
       var updated_process = dotenv.parse(fs.readFileSync(`./${process}/.env`));
-      res.status(201).json({ process: temp });
+
+      // Repopulating process.env
+      setEnv(updated_process);
+
+      res.status(201).json({ process: updated_process });
     } else {
       throw new Error("Enter Proper Params");
     }
   } catch (error) {
-    console.log(error, "set");
     if (error.code === "ENOENT") {
       next("Please enter proper process file name");
     }
     next(error);
   }
-
-  // Repopulating process.env
-
-  for (let k in updated_process) {
-    process.env[k] = updated_process[k];
-  }
 });
 
 app.use(errorHandler);
+
+// Helper Functions
 
 function errorHandler(err, req, res, next) {
   res.status(500);
   res.json({ error: err + "" });
 }
 
+function setEnv(updated_process) {
+  for (let k in updated_process) {
+    process.env[k] = updated_process[k];
+  }
+}
 app.get("*", (req, res) => res.status(503).json({ error: "Cant find API" }));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
